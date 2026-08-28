@@ -3,7 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"sort"
 	"strconv"
@@ -43,7 +42,6 @@ func (s *Storage) load() error {
 		}
 	}
 
-	fmt.Println("Load storage.json")
 	return nil
 }
 

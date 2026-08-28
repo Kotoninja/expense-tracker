@@ -25,11 +25,13 @@ to quickly create a Cobra application.`,
 		description, _ := cmd.Flags().GetString("description")
 		amount, _ := cmd.Flags().GetInt("amount")
 
-		timestampStr, _ := cmd.Flags().GetString("timestamp")
-		timestamp, err := time.Parse("2006-01-02", timestampStr)
-		if err != nil {
-			fmt.Println(err)
+		if description == "" || amount == 0 {
+			fmt.Println("Pls select desc and amount")
+			return
 		}
+
+		timestampStr, _ := cmd.Flags().GetString("date")
+		timestamp, _ := time.Parse("2006-01-02", timestampStr)
 		id, err := storage.StorageIO.Add(&description, &amount, &timestamp)
 		if err != nil {
 			fmt.Println(err)
@@ -43,8 +45,8 @@ to quickly create a Cobra application.`,
 func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().String("description", "", "Description of the item")
-	addCmd.Flags().String("amount", "", "The amount to be added")
-	addCmd.Flags().String("timestamp", "", "The timestamp of the record (e.g., YYYY-MM-DD)")
+	addCmd.Flags().Int("amount", 0, "The amount to be added")
+	addCmd.Flags().String("date", "", "The timestamp of the record (e.g., YYYY-MM-DD)")
 
 	// Here you will define your flags and configuration settings.
 
