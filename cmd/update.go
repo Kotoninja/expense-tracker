@@ -5,10 +5,10 @@ package cmd
 
 import (
 	"fmt"
-	"time"
-
 	storage "github.com/Kotoninja/expense-tracker/internal"
 	"github.com/spf13/cobra"
+	"time"
+	"unicode/utf8"
 )
 
 // updateCmd represents the update command
@@ -25,12 +25,19 @@ to quickly create a Cobra application.`,
 		id, _ := cmd.Flags().GetInt("id")
 		description, _ := cmd.Flags().GetString("description")
 		amount, _ := cmd.Flags().GetInt("amount")
-		date, _ := cmd.Flags().GetString("timestamp")
+		date, _ := cmd.Flags().GetString("date")
+
+		if description == "" && amount == 0 && date == "" {
+			fmt.Println("Specify the fields to update")
+			return
+		}
 
 		timestamp, err := time.Parse("2006-01-02", date)
-		fmt.Println(err)
 
-		fmt.Println(id, description, amount, timestamp)
+		if (utf8.RuneCountInString(date) != 0) && (err != nil) {
+			fmt.Println("Please enter the date in the format. (YYYY-MM-DD)")
+		}
+
 		if err := storage.StorageIO.Update(id, description, amount, timestamp); err != nil {
 			fmt.Println(err)
 			return
@@ -44,7 +51,7 @@ func init() {
 	updateCmd.Flags().Int("id", 0, "Identifier of object")
 	updateCmd.Flags().String("description", "", "Description of the item")
 	updateCmd.Flags().Int("amount", 0, "The amount to be added")
-	updateCmd.Flags().String("timestamp", "", "The timestamp of the record (e.g., YYYY-MM-DD)")
+	updateCmd.Flags().String("date", "", "The timestamp of the record (e.g., YYYY-MM-DD)")
 
 	// Here you will define your flags and configuration settings.
 

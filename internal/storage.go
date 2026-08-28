@@ -102,7 +102,7 @@ func (s *Storage) Update(id int, description string, amount int, timstamp time.T
 	if amount != 0 {
 		obj.Amount = amount
 	}
-	if timstamp.IsZero() {
+	if !timstamp.IsZero() {
 		obj.Date = timstamp
 	}
 
