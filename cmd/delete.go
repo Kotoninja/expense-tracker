@@ -22,6 +22,10 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		id, _ := cmd.Flags().GetInt("id")
+		if id <= 0 {
+			fmt.Println("Pls specify id")
+			return
+		}
 		if err := storage.StorageIO.Delete(id); err != nil {
 			fmt.Println(err)
 			return
