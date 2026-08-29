@@ -5,9 +5,7 @@ package cmd
 
 import (
 	"fmt"
-	"time"
 
-	storage "github.com/Kotoninja/expense-tracker/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -30,9 +28,7 @@ to quickly create a Cobra application.`,
 			return
 		}
 
-		timestampStr, _ := cmd.Flags().GetString("date")
-		timestamp, _ := time.Parse("2006-01-02", timestampStr)
-		id, err := storage.StorageIO.Add(&description, &amount, &timestamp)
+		id, err := expenseSvc.AddExpense(description, amount)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -46,7 +42,6 @@ func init() {
 	rootCmd.AddCommand(addCmd)
 	addCmd.Flags().String("description", "", "Description of the item")
 	addCmd.Flags().Int("amount", 0, "The amount to be added")
-	addCmd.Flags().String("date", "", "The timestamp of the record (e.g., YYYY-MM-DD)")
 
 	// Here you will define your flags and configuration settings.
 
