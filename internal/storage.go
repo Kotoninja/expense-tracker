@@ -129,3 +129,13 @@ func (s *Storage) List() [][]string {
 
 	return result
 }
+
+func (s *Storage) Summary() int {
+	var answer int
+
+	for _, exp := range s.data {
+		answer += exp.Amount
+	}
+
+	return answer
+}
