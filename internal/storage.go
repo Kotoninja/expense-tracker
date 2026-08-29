@@ -130,11 +130,13 @@ func (s *Storage) List() [][]string {
 	return result
 }
 
-func (s *Storage) Summary() int {
+func (s *Storage) Summary(month int) int {
 	var answer int
 
 	for _, exp := range s.data {
-		answer += exp.Amount
+		if month == 0 || (month != 0 && exp.Date.Month() == time.Month(month)) {
+			answer += exp.Amount
+		}
 	}
 
 	return answer

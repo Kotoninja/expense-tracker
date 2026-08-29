@@ -21,7 +21,9 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		summary := storage.StorageIO.Summary()
+		month, _ := cmd.Flags().GetInt("month")
+
+		summary := storage.StorageIO.Summary(month)
 
 		fmt.Println("Total expense:", summary)
 	},
@@ -29,6 +31,8 @@ to quickly create a Cobra application.`,
 
 func init() {
 	rootCmd.AddCommand(summaryCmd)
+
+	summaryCmd.Flags().Int("month", 0, "see summary for a specific month")
 
 	// Here you will define your flags and configuration settings.
 
