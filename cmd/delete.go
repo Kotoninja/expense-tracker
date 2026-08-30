@@ -6,7 +6,6 @@ package cmd
 import (
 	"fmt"
 
-	storage "github.com/Kotoninja/expense-tracker/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -26,7 +25,7 @@ to quickly create a Cobra application.`,
 			fmt.Println("Pls specify id")
 			return
 		}
-		if err := storage.StorageIO.Delete(id); err != nil {
+		if err := expenseSvc.DeleteExpense(id); err != nil {
 			fmt.Println(err)
 			return
 		}

@@ -5,10 +5,11 @@ package cmd
 
 import (
 	"fmt"
-	storage "github.com/Kotoninja/expense-tracker/internal"
+	"os"
+	"strconv"
+
 	"github.com/olekukonko/tablewriter"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 // listCmd represents the list command
@@ -22,15 +23,21 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		var expenseList [][]string
-
-		expenseList = storage.StorageIO.List()
+		expenseList := expenseSvc.ListExpenses()
 
 		if len(expenseList) == 0 {
 			fmt.Println("There are no expenses")
 		} else {
 			tabwriterData := [][]string{{"ID", "Description", "Amount", "Date"}}
-			tabwriterData = append(tabwriterData, expenseList...)
+			for _, object := range expenseList {
+				tabwriterData = append(
+					tabwriterData,
+					[]string{
+						strconv.Itoa(object.ID),
+						object.Description,
+						strconv.Itoa(object.Amount),
+						object.Date})
+			}
 			table := tablewriter.NewWriter(os.Stdout)
 			table.Header(tabwriterData[0])
 			table.Bulk(tabwriterData[1:])
